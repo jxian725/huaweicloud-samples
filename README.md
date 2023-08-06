@@ -4,4 +4,7 @@ In order to try this demo, you will need to configure your Huawei Cloud credenti
 <br>You may retrieve the credentials on Huawei Cloud console.
 <br><br>
 ### Updating ECS
-run systemctl restart springboot
+run 
+```
+systemctl restart springboot
+```
