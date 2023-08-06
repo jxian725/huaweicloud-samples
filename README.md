@@ -4,7 +4,12 @@ In order to try this demo, you will need to configure your Huawei Cloud credenti
 <br>You may retrieve the credentials on Huawei Cloud console.
 <br><br>
 ### Updating ECS
-run 
+1. Build Package and rename the package to app.jar
+```
+mvn clean package
+```
+2. Using FTP/SFTP to upload the app.jar to ECS 
+3. Restart springboot service
 ```
 systemctl restart springboot
 ```
