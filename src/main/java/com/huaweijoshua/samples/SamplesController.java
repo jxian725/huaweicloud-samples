@@ -39,7 +39,7 @@ public class SamplesController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("X-Auth-Token", token);
-        String requestJson = "{\"image\":\"" + base64 + "\",\"detect_direction\":true,\"detect_font\":false}";
+        String requestJson = "{\"image\":\"" + base64 + "\",\"detect_direction\":false,\"detect_font\":false}";
         HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
         ResponseEntity<String> response = restTemplate.postForEntity("https://ocr.ap-southeast-2.myhuaweicloud.com/v2/" + applicationConfig.projectID() + "/ocr/web-image", entity,String.class);
         return response.getBody();
