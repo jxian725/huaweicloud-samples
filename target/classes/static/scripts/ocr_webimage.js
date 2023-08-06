@@ -2,10 +2,12 @@ var detected_text = [];
 const wrapper = document.getElementById("signature-pad");
 const canvas = wrapper.querySelector("canvas");
 const backspace = document.getElementById("backspace");
+console.log(window.innerWidth);
+console.log(window.innerHeight);
 const signaturePad = new SignaturePad(canvas, {
     backgroundColor: 'rgb(255, 255, 255)',
-    minWidth: 3,
-    maxWidth: 6,
+    minWidth: window.innerWidth > window.innerHeight ? 3 : 1.5,
+    maxWidth: window.innerWidth > window.innerHeight ? 6 : 3,
 });
 
 function resizeCanvas() {
