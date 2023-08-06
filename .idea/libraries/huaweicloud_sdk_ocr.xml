@@ -1,0 +1,30 @@
+<component name="libraryTable">
+  <library name="huaweicloud.sdk.ocr" type="repository">
+    <properties maven-id="com.huaweicloud.sdk:huaweicloud-sdk-ocr:3.1.52" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/huaweicloud-sdk-ocr-3.1.52.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/huaweicloud-sdk-core-3.1.52.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/snakeyaml-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-core-2.14.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-annotations-2.14.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-databind-2.14.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-datatype-jsr310-2.14.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jackson-datatype-jdk8-2.14.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/okhttp-4.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/okio-3.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/okio-jvm-3.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-1.6.20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-common-1.6.20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-13.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-jdk8-1.6.20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-jdk7-1.6.20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/bgmprovider-1.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jca-1.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jsse-1.0.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/bcprov-jdk18on-1.75.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.36.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
