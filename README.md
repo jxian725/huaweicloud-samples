@@ -8,8 +8,11 @@ In order to try this demo, you will need to configure your Huawei Cloud credenti
 ```
 mvn clean package
 ```
-2. Using FTP/SFTP to upload the app.jar to ECS 
-3. Restart springboot service
+2. Using FTP/SFTP to upload the app.jar to ECS
+```
+dir /home/springboot/root/
+```
+4. Restart springboot service
 ```
 systemctl restart springboot
 ```
