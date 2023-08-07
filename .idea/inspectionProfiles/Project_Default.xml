@@ -5,6 +5,7 @@
       <option name="customHeaders">
         <set>
           <option value="X-Auth-Token" />
+          <option value="X-Subject-Token" />
         </set>
       </option>
     </inspection_tool>
