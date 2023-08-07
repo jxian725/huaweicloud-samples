@@ -2,8 +2,6 @@ var detected_text = [];
 const wrapper = document.getElementById("signature-pad");
 const canvas = wrapper.querySelector("canvas");
 const backspace = document.getElementById("backspace");
-console.log(window.innerWidth);
-console.log(window.innerHeight);
 const signaturePad = new SignaturePad(canvas, {
     backgroundColor: 'rgb(255, 255, 255)',
     minWidth: window.innerWidth > window.innerHeight ? 3 : 1.5,
@@ -30,12 +28,17 @@ backspace.addEventListener("click", () => {
 
 signaturePad.addEventListener("endStroke", () => {
     const dataURL = signaturePad.toDataURL();
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-        populateOCR(this.responseText);
-    }
-    xhr.open("GET", `http://${window.location.host}/hw_ocr?base64=${encodeURIComponent(dataURL.substring(22))}`);
-    xhr.send();
+    $.ajax({
+        type: "POST",
+        url: `http://${window.location.host}/hw_ocr`,
+        data: dataURL.substring(22),
+        success: function (msg) {
+            populateOCR(msg)
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status, `OCR API Error`);
+        }
+    });
 }, { once: false });
 
 function populateOCR(json){

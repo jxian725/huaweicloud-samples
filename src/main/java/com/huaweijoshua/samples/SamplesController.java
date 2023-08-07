@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import java.util.Objects;
 
 @Controller
 @CacheConfig(cacheNames = "token")
@@ -31,9 +31,11 @@ public class SamplesController {
         return "ocr_webimage";
     }
 
-    @RequestMapping(value = "/hw_ocr", method = GET)
+    //@RequestMapping(value = "/hw_ocr", method = POST)
+    @PostMapping("/hw_ocr")
     @ResponseBody
-    public String HW_OCR_API(@RequestParam("base64") String base64) {
+    public String HW_OCR_API(@RequestBody String enc_base64) {
+        String base64 = enc_base64.replaceAll("%2F", "/");
         String token = getToken();
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -54,7 +56,6 @@ public class SamplesController {
         HttpEntity<String> entity = new HttpEntity<String>(requestJson, headers);
         ResponseEntity<String> response = restTemplate.postForEntity("https://iam.ap-southeast-2.myhuaweicloud.com/v3/auth/tokens", entity,String.class);
         HttpHeaders resHeaders = response.getHeaders();
-        String xst = resHeaders.get("X-Subject-Token").toString().replaceAll("\\[", "").replaceAll("\\]","");;
-        return xst;
+        return Objects.requireNonNull(resHeaders.get("X-Subject-Token")).toString().replaceAll("\\[", "").replaceAll("\\]","");
     }
 }
