@@ -35,7 +35,6 @@ public class SamplesController {
         return "ocr_webimage";
     }
 
-    //@RequestMapping(value = "/hw_ocr", method = POST)
     @PostMapping("/hw_ocr")
     @ResponseBody
     public String HW_OCR_API(@RequestBody String enc_base64) {
