@@ -1,4 +1,4 @@
-var detected_text = [];
+var detected_text = [],detection_image = false;
 const wrapper = document.getElementById("signature-pad");
 const canvas = wrapper.querySelector("canvas");
 const backspace = document.getElementById("backspace");
@@ -35,12 +35,13 @@ backspace.addEventListener("click", () => {
 
 signaturePad.addEventListener("endStroke", () => {
     const dataURL = signaturePad.toDataURL();
+    detection_image = false;
     OCRAPI(dataURL);
 }, { once: false });
 
 function populateOCR(json){
     const ocrResult = JSON.parse(json);
-    const probability = ocrResult.result.words_block_list.sort((a,b) => (a.confidence > b.confidence) ? 1 : ((b.confidence > a.confidence) ? -1 : 0));
+    const probability = detection_image ? (ocrResult.result.words_block_list).reverse() : ocrResult.result.words_block_list.sort((a,b) => (a.confidence > b.confidence) ? 1 : ((b.confidence > a.confidence) ? -1 : 0));
     if(probability.length>0){
         probability.forEach((x) => {
             if(/[a-zA-Z0-9_-]/.test(x.words)){
@@ -73,6 +74,7 @@ function readImage() {
     if (!this.files || !this.files[0]) return;
     const fileReader = new FileReader();
     fileReader.addEventListener("load", function(evt) {
+        detection_image = true;
         OCRAPI(evt.target.result);
         document.querySelector(".cover-container.full").style.display = "block";
         document.querySelector(".cover-container.full").style.backgroundImage  = `url(${evt.target.result})`;
@@ -95,7 +97,8 @@ function OCRAPI(image){
 }
 
 function clearAll(){
-    detected_text=[];
+    detected_text = [];
+    detection_image = false;
     signaturePad.clear();
     document.getElementById("ocr-result").innerHTML = "";
     document.getElementById("fileInput").value = "";
