@@ -22,23 +22,20 @@ document.getElementById("clearButton").addEventListener("click", () => {
     clearAll();
 });
 
+document.getElementById("uploadButton").addEventListener("click", () => {
+    document.getElementById("fileInput").click();
+});
+
+
+document.getElementById("fileInput").addEventListener("change", readImage);
+
 backspace.addEventListener("click", () => {
     document.getElementById("input-recog").value = (document.getElementById("input-recog").value).substring(0,(document.getElementById("input-recog").value).length-1);
 });
 
 signaturePad.addEventListener("endStroke", () => {
     const dataURL = signaturePad.toDataURL();
-    $.ajax({
-        type: "POST",
-        url: `http://${window.location.host}/hw_ocr`,
-        data: dataURL.substring(22),
-        success: function (msg) {
-            populateOCR(msg)
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr.status, `OCR API Error`);
-        }
-    });
+    OCRAPI(dataURL);
 }, { once: false });
 
 function populateOCR(json){
@@ -72,9 +69,37 @@ function populateOCR(json){
     });
 }
 
+function readImage() {
+    if (!this.files || !this.files[0]) return;
+    const fileReader = new FileReader();
+    fileReader.addEventListener("load", function(evt) {
+        OCRAPI(evt.target.result);
+        document.querySelector(".cover-container.full").style.display = "block";
+        document.querySelector(".cover-container.full").style.backgroundImage  = `url(${evt.target.result})`;
+    });
+    fileReader.readAsDataURL(this.files[0]);
+}
+
+function OCRAPI(image){
+    $.ajax({
+        type: "POST",
+        url: `http://${window.location.host}/hw_ocr`,
+        data: image.substring(22),
+        success: function (msg) {
+            populateOCR(msg)
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status, `OCR API Error`);
+        }
+    });
+}
+
 function clearAll(){
     detected_text=[];
     signaturePad.clear();
     document.getElementById("ocr-result").innerHTML = "";
+    document.getElementById("fileInput").value = "";
+    document.querySelector(".cover-container.full").style.display = "none";
+    document.querySelector(".cover-container.full").style.backgroundImage  = `none`;
 }
 
