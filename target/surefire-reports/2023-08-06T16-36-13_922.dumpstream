@@ -1,5 +1,0 @@
-# Created at 2023-08-06T16:36:14.050
-Boot Manifest-JAR contains absolute paths in classpath 'D:\Repositories\Huawei\samples\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-'other' has different root
-
