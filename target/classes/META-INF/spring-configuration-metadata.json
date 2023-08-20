@@ -2,30 +2,30 @@
   "groups": [
     {
       "name": "ocrwi",
-      "type": "com.huaweijoshua.samples.ApplicationConfigProperties",
-      "sourceType": "com.huaweijoshua.samples.ApplicationConfigProperties"
+      "type": "com.huaweijoshua.samples.ApplicationConfigPropertiesOCR",
+      "sourceType": "com.huaweijoshua.samples.ApplicationConfigPropertiesOCR"
     }
   ],
   "properties": [
     {
       "name": "ocrwi.auth-domain",
       "type": "java.lang.String",
-      "sourceType": "com.huaweijoshua.samples.ApplicationConfigProperties"
+      "sourceType": "com.huaweijoshua.samples.ApplicationConfigPropertiesOCR"
     },
     {
       "name": "ocrwi.auth-name",
       "type": "java.lang.String",
-      "sourceType": "com.huaweijoshua.samples.ApplicationConfigProperties"
+      "sourceType": "com.huaweijoshua.samples.ApplicationConfigPropertiesOCR"
     },
     {
       "name": "ocrwi.auth-password",
       "type": "java.lang.String",
-      "sourceType": "com.huaweijoshua.samples.ApplicationConfigProperties"
+      "sourceType": "com.huaweijoshua.samples.ApplicationConfigPropertiesOCR"
     },
     {
       "name": "ocrwi.project-i-d",
       "type": "java.lang.String",
-      "sourceType": "com.huaweijoshua.samples.ApplicationConfigProperties"
+      "sourceType": "com.huaweijoshua.samples.ApplicationConfigPropertiesOCR"
     }
   ],
   "hints": []
