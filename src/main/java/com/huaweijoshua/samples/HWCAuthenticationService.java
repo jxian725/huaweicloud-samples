@@ -24,4 +24,5 @@ public class HWCAuthenticationService {
         HttpHeaders resHeaders = response.getHeaders();
         return Objects.requireNonNull(resHeaders.get("X-Subject-Token")).toString().replaceAll("\\[", "").replaceAll("\\]","");
     }
+
 }

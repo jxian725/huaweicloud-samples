@@ -7,7 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @EnableCaching
 @SpringBootApplication
-@EnableConfigurationProperties(ApplicationConfigProperties.class)
+@EnableConfigurationProperties(ApplicationConfigPropertiesOCR.class)
 public class SamplesApplication {
 
     public static void main(String[] args) {
