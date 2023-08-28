@@ -43,9 +43,9 @@ public class SamplesController {
     }
 
 
-    @GetMapping("/ocr_webimage_partner")
+    @GetMapping("/htr_webimage")
     public String OCR_ChineseHandwritingRecognitionPartner(){
-        return "ocr_webimage_partner";
+        return "htr_webimage";
     }
 
     @PostMapping("/hw_ocr")

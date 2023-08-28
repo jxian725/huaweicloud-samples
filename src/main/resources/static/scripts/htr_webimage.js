@@ -3,6 +3,7 @@ const wrapper = document.getElementById("signature-pad");
 const canvas = wrapper.querySelector("canvas");
 var ctx = wrapper.querySelector("canvas").getContext("2d");
 const backspace = document.getElementById("backspace");
+const testkey = "xxx";
 var mousePressed = false;
 var lastX, lastY;
 var curTrace = new Object();
@@ -82,7 +83,7 @@ function InitThis() {
         mousePressed = false;
         coordinate = coordinate + "-1,0,";
         curTrace.traceStr = coordinate;
-        HTRAPI();
+        HTRAPI(curTrace);
     };
 }
 
@@ -101,7 +102,29 @@ function Draw(x, y, isDown) {
     coordinate = coordinate + x + "," + y + ",";
 }
 
-function HTRAPI(image){
+function HTRAPI(strokes){
+    console.log(strokes);
+    $.ajax({
+        type: "POST",
+        url: `http://api.hanvon.com/rt/ws/v1/hand/single?key=${testkey}&code=83b798e7-cd10-4ce3-bd56-7b9e66ace93d`,
+        contentType : "application/octet-stream",
+        datatype : "json",
+        crossDomain: false,
+        jsonp:'callback',
+        data: `"uid":"","type":"1","lang":"chns","data":"76.55,79.55,51.7,119.35,43.75,129.3,-1,0"}`,
+        async : false,
+        success: function (msg) {
+            let decrypt = window.atob(msg);
+            console.log(decrypt);
+            console.log("code:"+decrypt.code);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status, `HTR API Error`);
+        }
+    });
+}
+
+function HTRAPI2(image){
     $.ajax({
         type: "POST",
         url: `http://${window.location.host}/hw_htr`,
@@ -111,26 +134,6 @@ function HTRAPI(image){
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status, `HTR API Error`);
-        }
-    });
-}
-
-function recgHandline(){
-    $.ajax({
-        url:'http://handword.huaweiapi.hanvon.com/rt/ws/v1/hand/single?code= 83b798e7-cd10-4ce3-bd56-7b9e66ace93d'+lang,
-        type: 'POST',
-        secureuri:false,
-        dataType: 'json',
-        data: curTrace,
-        success: function(data, status){
-            if(data.code == "0"){
-                console.log(data.result);
-                //$("#result").text(data.result);
-            }else{
-                console.log("您书写的太有范儿了，我都不认识了");
-                //$("#errorMsg").text("您书写的太有范儿了，我都不认识了");
-                //$("#result").text("");
-            }
         }
     });
 }
