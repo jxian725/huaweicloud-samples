@@ -3,7 +3,7 @@ const wrapper = document.getElementById("signature-pad");
 const canvas = wrapper.querySelector("canvas");
 var ctx = wrapper.querySelector("canvas").getContext("2d");
 const backspace = document.getElementById("backspace");
-const testkey = "xxx";
+const testkey = "xxxx"; //HanWang API -> Work WeChat Scan Login
 var mousePressed = false;
 var lastX, lastY;
 var curTrace = new Object();
@@ -23,10 +23,10 @@ window.onresize = resizeCanvas;
 resizeCanvas();
 
 document.getElementById("clearButton").addEventListener("click", () => {
-    //$("#result").text("");
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    //ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     coordinate = "";
+    document.getElementById("ocr-result").innerHTML = "";
 });
 
 backspace.addEventListener("click", () => {
@@ -36,7 +36,6 @@ backspace.addEventListener("click", () => {
 function InitThis() {
     //		触摸屏
     canvas.addEventListener('touchstart', function (event) {
-        console.log(1);
         if (event.targetTouches.length == 1) {
             event.preventDefault();// 阻止浏览器默认事件，重要
             var touch = event.targetTouches[0];
@@ -47,7 +46,6 @@ function InitThis() {
     },false);
 
     canvas.addEventListener('touchmove', function (event) {
-        console.log(2);
         if (event.targetTouches.length == 1) {
             event.preventDefault();// 阻止浏览器默认事件，重要
             var touch = event.targetTouches[0];
@@ -59,7 +57,6 @@ function InitThis() {
     },false);
 
     canvas.addEventListener('touchend', function (event) {
-        console.log(3)
         if (event.targetTouches.length == 1) {
             event.preventDefault();
             mousePressed = false;
@@ -88,9 +85,14 @@ function InitThis() {
 }
 
 function Draw(x, y, isDown) {
+    //console.log(canvas.width,canvas.offsetWidth);
+    const rect = canvas.getBoundingClientRect();
+    x = Math.round((x - rect.left)/(rect.right - rect.left)*canvas.offsetWidth);
+    y = Math.round((y - rect.top)/(rect.bottom - rect.top)*canvas.offsetHeight);
+    //console.log(x,y);
     if (isDown) {
         ctx.beginPath();
-        ctx.strokeStyle = "#ff0000";
+        ctx.strokeStyle = "#191919";
         ctx.lineWidth = "3";
         ctx.lineJoin = "round";
         ctx.moveTo(lastX, lastY);
@@ -102,8 +104,42 @@ function Draw(x, y, isDown) {
     coordinate = coordinate + x + "," + y + ",";
 }
 
+function populateHTR(array){
+    if(array.length>0){
+        detected_text = [];
+        document.getElementById("ocr-result").innerHTML = "";
+        array.forEach((x) => {
+            if(x.trim() !== ""){
+                let unicode = `&#${x}`
+                if(!detected_text.includes(unicode) && detected_text.length<=8) {
+                    detected_text.push(unicode);
+                }
+            }
+        });
+        document.getElementById("ocr-result").innerHTML = "";
+        detected_text.forEach((x) => {
+            let li = document.createElement("li");
+            let span = document.createElement("span");
+            span.innerHTML = x;
+            li.appendChild(span);
+            document.getElementById("ocr-result").append(li);
+        });
+    }
+    $("ul#ocr-result>li").click(function(){
+        document.getElementById("input-recog").value += this.innerText;
+        clearAll();
+    });
+}
+
+function clearAll(){
+    detected_text = [];
+    //ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    coordinate = "";
+    document.getElementById("ocr-result").innerHTML = "";
+}
+
 function HTRAPI(strokes){
-    console.log(strokes);
     $.ajax({
         type: "POST",
         url: `http://api.hanvon.com/rt/ws/v1/hand/single?key=${testkey}&code=83b798e7-cd10-4ce3-bd56-7b9e66ace93d`,
@@ -111,12 +147,16 @@ function HTRAPI(strokes){
         datatype : "json",
         crossDomain: false,
         jsonp:'callback',
-        data: `"uid":"","type":"1","lang":"chns","data":"76.55,79.55,51.7,119.35,43.75,129.3,-1,0"}`,
+        data: `{"uid":"","type":"1","lang":"chns","data":"${strokes.traceStr}"}`,
         async : false,
         success: function (msg) {
-            let decrypt = window.atob(msg);
-            console.log(decrypt);
-            console.log("code:"+decrypt.code);
+            let decrypt = JSON.parse(window.atob(msg));
+            if(decrypt.code == 0){
+                const unicodes = (decrypt.result).split(",");
+                populateHTR(unicodes);
+            }else{
+                alert("Unable to recognize the input. Please try again.");
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status, `HTR API Error`);
