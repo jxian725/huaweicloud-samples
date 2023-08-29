@@ -34,7 +34,6 @@ backspace.addEventListener("click", () => {
 });
 
 function InitThis() {
-    //		触摸屏
     canvas.addEventListener('touchstart', function (event) {
         if (event.targetTouches.length == 1) {
             event.preventDefault();// 阻止浏览器默认事件，重要
@@ -42,29 +41,32 @@ function InitThis() {
             mousePressed = true;
             Draw(touch.pageX - this.offsetLeft, touch.pageY - this.offsetTop, false);
         }
-
     },false);
 
     canvas.addEventListener('touchmove', function (event) {
         if (event.targetTouches.length == 1) {
-            event.preventDefault();// 阻止浏览器默认事件，重要
+            event.preventDefault();
             var touch = event.targetTouches[0];
             if (mousePressed) {
                 Draw(touch.pageX - this.offsetLeft, touch.pageY - this.offsetTop, true);
             }
         }
-
     },false);
 
     canvas.addEventListener('touchend', function (event) {
         if (event.targetTouches.length == 1) {
             event.preventDefault();
             mousePressed = false;
+            console.log("touchend");
+        }else if(event.targetTouches.length == 0){
+            mousePressed = false;
+            coordinate = coordinate + "-1,0,";
+            curTrace.traceStr = coordinate;
+            HTRAPI(curTrace);
         }
     },false);
 
 
-    //	   鼠标
     canvas.onmousedown = function (event) {
         mousePressed = true;
         Draw(event.pageX - this.offsetLeft, event.pageY - this.offsetTop, false);
@@ -139,7 +141,7 @@ function clearAll(){
     document.getElementById("ocr-result").innerHTML = "";
 }
 
-function HTRAPI(strokes){
+function HTRAPI2(strokes){
     $.ajax({
         type: "POST",
         url: `http://api.hanvon.com/rt/ws/v1/hand/single?key=${testkey}&code=83b798e7-cd10-4ce3-bd56-7b9e66ace93d`,
@@ -164,13 +166,19 @@ function HTRAPI(strokes){
     });
 }
 
-function HTRAPI2(image){
+function HTRAPI(strokes){
     $.ajax({
         type: "POST",
         url: `http://${window.location.host}/hw_htr`,
-        data: {"strokes": JSON.stringify(curTrace), "ip": window.location.hostname},
+        data: {"strokes": JSON.stringify(strokes.traceStr), "ip": window.location.hostname},
         success: function (msg) {
-            console.log(msg)
+            let decrypt = JSON.parse(window.atob(msg));
+            if(decrypt.code == 0){
+                const unicodes = (decrypt.result).split(",");
+                populateHTR(unicodes);
+            }else{
+                alert("Unable to recognize the input. Please try again.");
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status, `HTR API Error`);

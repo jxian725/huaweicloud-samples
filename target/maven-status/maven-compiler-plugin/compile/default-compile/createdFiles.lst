@@ -1,6 +1,7 @@
-com\huaweijoshua\samples\HWCAuthenticationService.class
 com\huaweijoshua\samples\SamplesApplication.class
 META-INF\spring-configuration-metadata.json
 com\huaweijoshua\samples\CacheConfig.class
-com\huaweijoshua\samples\ApplicationConfigProperties.class
+com\huaweijoshua\samples\HTRRequest.class
+com\huaweijoshua\samples\HWCAuthenticationService.class
+com\huaweijoshua\samples\ApplicationConfigPropertiesOCR.class
 com\huaweijoshua\samples\SamplesController.class
