@@ -2,7 +2,6 @@ package com.huaweijoshua.samples;
 
 import com.cloud.apigateway.sdk.utils.Client;
 import com.cloud.apigateway.sdk.utils.Request;
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -68,58 +67,32 @@ public class SamplesController {
     public String HW_HTR_API(HTRRequest htrRequest) {
         Request request = new Request();
         try {
-            //Set the AK/SK to sign and authenticate the request.
-            request.setKey("xxx");
-            request.setSecret("xxx");
-
-            //The following example shows how to set the request URL and parameters to query a VPC list.
-
-            //Specify a request method, such as GET, PUT, POST, DELETE, HEAD, and PATCH.
+            request.setKey(acOCR.hanwangKey());
+            request.setSecret(acOCR.hanwangSecret());
             request.setMethod("POST");
-
-            //Set a request URL in the format of https://{Endpoint}/{URI}.
-            request.setUrl("http://handword4.huaweiapi.hanvon.com/rt/ws/v1/hand/single?code=83b798e7-cd10-4ce3-bd56-7b9e66ace93d");
-
-            //Add header parameters, for example, x-domain-id for invoking a global service and x-project-id for invoking a project-level service.
+            request.setUrl("http://handword4.apistore.huaweicloud.com/rt/ws/v1/hand/single?code=83b798e7-cd10-4ce3-bd56-7b9e66ace93d");
             request.addHeader("Content-Type", "application/octet-stream");
-
-            //Add a body if you have specified the PUT or POST method. Special characters, such as the double quotation mark ("), contained in the body must be escaped.
-            request.setBody("{\"description\":\"{\"uid\":\"118.12.0.12\",\"type\":\"1\",\"lang\":\"chns\",\"data\":\"76.55,79.55,51.7,119.35,43.75,129.3,-1,0\"}\",\"format\":\"STREAM\"}");
-
+            request.setBody("{\"uid\":\""+htrRequest.getip()+"\",\"type\":\"1\",\"lang\":\"chns\",\"data\":"+htrRequest.getStrokes()+"}");
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
         }
-
+        String responseStr = "";
         CloseableHttpClient client = null;
         try {
-            //Sign the request.
             HttpRequestBase signedRequest = Client.sign(request);
-
-            //Send the request.
             client = HttpClients.custom().build();
             HttpResponse response = client.execute(signedRequest);
-
-            //Print the status line of the response.
-            System.out.println(response.getStatusLine().toString());
-
-            //Print the header fields of the response.
-            Header[] resHeaders = response.getAllHeaders();
-            for (Header h : resHeaders) {
-                System.out.println(h.getName() + ":" + h.getValue());
-            }
-
-            //Print the body of the response.
             org.apache.http.HttpEntity resEntity = response.getEntity();
             if (resEntity != null) {
-                System.out.println(System.getProperty("line.separator") + EntityUtils.toString(resEntity, "UTF-8"));
+                responseStr = EntityUtils.toString(response.getEntity(), "UTF-8");
+                System.out.println(System.getProperty("line.separator") + responseStr);
             }
 
-            return response.getEntity().toString();
+            return responseStr;
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
-
         } finally {
             try {
                 if (client != null) {
@@ -130,4 +103,5 @@ public class SamplesController {
             }
         }
     }
+
 }

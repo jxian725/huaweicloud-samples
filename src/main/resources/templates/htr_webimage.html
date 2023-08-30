@@ -10,16 +10,16 @@
         <link th:href="@{/styles/ocr_webimage.css}" rel="stylesheet" />
     </head>
     <body onselectstart="return false">
-        <h1 id="title">Huawei HTR Demo (Partner)</h1>
+        <h1 id="title">Huawei HTR Demo</h1>
         <div id="signature-pad" class="signature-pad">
             <div class="input-container"><input type="text" id="input-recog" readOnly/><button id="backspace">⌫</button></div>
             <div class="signature-pad--body">
                 <canvas></canvas>
-                <div class="cover-container top"></div>
+                <!--<div class="cover-container top"></div>
                 <div class="cover-container left"></div>
                 <div class="cover-container right"></div>
                 <div class="cover-container bottom"></div>
-                <div class="cover-container full"></div>
+                <div class="cover-container full"></div>-->
             </div>
             <div class="signature-pad--footer">
                 <div class="description">Handwrite Input Within the Box</div>
@@ -36,7 +36,6 @@
         </div>
         <p id="footer"><a href="https://support.huaweicloud.com/intl/en-us/api-ocr/api-ocr.pdf#page=26" target="_blank">API Documentations</a></p>
         <script src="scripts/jquery-3.7.0.min.js"></script>
-        <script src="scripts/signature_pad.umd.js"></script>
         <script src="scripts/htr_webimage.js"></script>
     </body>
 </html>
